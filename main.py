@@ -1,30 +1,36 @@
-from sqlalchemy import create_engine
-# from sqlalchemy.pool import NullPool
-from dotenv import load_dotenv
-import os
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
+from app.api.v1.endpoints import auth
+#from app.api.v1.endpoints import products, sales, auth, inventory_logs, cash_register, transaction, general_ledger,cash_flow, enum_type, account, journal_entry, vendor, purchase_orders
+app = FastAPI()
 
-# Load environment variables from .env
-load_dotenv()
+# Set up CORS
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # List the allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+"""app.include_router(products.router, prefix="/api/v1/products", tags=["products"])
+app.include_router(sales.router, prefix="/api/v1/sales", tags=["sales"])
+app.include_router(inventory_logs.router, prefix="/api/v1/inventory", tags=["inventory"])
+app.include_router(cash_register.router, prefix="/api/v1/cash-register", tags=["register"])
+app.include_router(transaction.router, prefix="/api/v1/transaction", tags=["transaction"])
+app.include_router(general_ledger.router, prefix="/api/v1/general-ledger", tags=["general_ledger"])
+app.include_router(journal_entry.router, prefix="/api/v1/journal-entries", tags=["journal_entry"])
+app.include_router(cash_flow.router, prefix="/api/v1/cash_flow", tags=["cash_flow"])
+app.include_router(enum_type.router, prefix="/api/v1/enum_type", tags=["enum_type"])
+app.include_router(account.router, prefix="/api/v1/account", tags=["account"])
+app.include_router(vendor.router, prefix="/api/v1/vendor", tags=["vendor"])
+app.include_router(purchase_orders.router, prefix="/api/v1/purchase_orders", tags=["purchase_orders"])
 
-# Fetch variables
-USER = os.getenv("user")
-PASSWORD = os.getenv("password")
-HOST = os.getenv("host")
-PORT = os.getenv("port")
-DBNAME = os.getenv("dbname")
+"""
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
 
-# Construct the SQLAlchemy connection string
-DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the POS API"}
 
-# Create the SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
-# If using Transaction Pooler or Session Pooler, we want to ensure we disable SQLAlchemy client side pooling -
-# https://docs.sqlalchemy.org/en/20/core/pooling.html#switching-pool-implementations
-# engine = create_engine(DATABASE_URL, poolclass=NullPool)
 
-# Test the connection
-try:
-    with engine.connect() as connection:
-        print("Connection successful!")
-except Exception as e:
-    print(f"Failed to connect: {e}")

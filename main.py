@@ -1,24 +1,11 @@
-from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
-#from app.api.v1.endpoints import auth
 from sqlalchemy import create_engine
 # from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
 import os
-
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 #from app.api.v1.endpoints import products, sales, auth, inventory_logs, cash_register, transaction, general_ledger,cash_flow, enum_type, account, journal_entry, vendor, purchase_orders
 app = FastAPI()
-
-# Set up CORS
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # List the allowed origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
-)
-
 
 # Load environment variables from .env
 load_dotenv()

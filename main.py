@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 from uuid import uuid4, UUID
+from app.api.v1.endpoints import auth
 
 app = FastAPI()
 
@@ -29,9 +30,6 @@ items_db: List[Item] = []
 # ------------------------------
 # API Endpoints
 # ------------------------------
-@app.get("/", tags=["Root"])
-def read_root():
-    return {"message": "Welcome to the FastAPI app!"}
 
 @app.get("/items", response_model=List[Item], tags=["Items"])
 def get_items():
@@ -66,6 +64,13 @@ def delete_item(item_id: UUID):
             del items_db[index]
             return {"message": "Item deleted"}
     raise HTTPException(status_code=404, detail="Item not found")
+
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the POS API"}
+
 
 # ------------------------------
 # For Local Testing

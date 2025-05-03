@@ -2,3 +2,10 @@ fastapi
 uvicorn
 dotenv
 psycopg2
+sqlalchemy
+asyncpg
+databases
+alembic
+pydantic
+passlib[bcrypt]
+python-jose[cryptography]

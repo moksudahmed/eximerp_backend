@@ -1,69 +1,9 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import List, Optional
-from uuid import uuid4, UUID
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 from app.api.v1.endpoints import auth
+#from app.api.v1.endpoints import products, sales, auth, inventory_logs, cash_register, transaction, general_ledger,cash_flow, enum_type, account, journal_entry, vendor, purchase_orders
 
 app = FastAPI()
-
-# ------------------------------
-# Pydantic Models
-# ------------------------------
-class Item(BaseModel):
-    id: UUID
-    name: str
-    description: Optional[str] = None
-    price: float
-    in_stock: bool = True
-
-class ItemCreate(BaseModel):
-    name: str
-    description: Optional[str] = None
-    price: float
-    in_stock: bool = True
-
-# ------------------------------
-# Fake Database
-# ------------------------------
-items_db: List[Item] = []
-
-# ------------------------------
-# API Endpoints
-# ------------------------------
-
-@app.get("/items", response_model=List[Item], tags=["Items"])
-def get_items():
-    return items_db
-
-@app.post("/items", response_model=Item, tags=["Items"])
-def create_item(item: ItemCreate):
-    new_item = Item(id=uuid4(), **item.dict())
-    items_db.append(new_item)
-    return new_item
-
-@app.get("/items/{item_id}", response_model=Item, tags=["Items"])
-def get_item(item_id: UUID):
-    for item in items_db:
-        if item.id == item_id:
-            return item
-    raise HTTPException(status_code=404, detail="Item not found")
-
-@app.put("/items/{item_id}", response_model=Item, tags=["Items"])
-def update_item(item_id: UUID, updated_item: ItemCreate):
-    for index, item in enumerate(items_db):
-        if item.id == item_id:
-            updated = Item(id=item_id, **updated_item.dict())
-            items_db[index] = updated
-            return updated
-    raise HTTPException(status_code=404, detail="Item not found")
-
-@app.delete("/items/{item_id}", tags=["Items"])
-def delete_item(item_id: UUID):
-    for index, item in enumerate(items_db):
-        if item.id == item_id:
-            del items_db[index]
-            return {"message": "Item deleted"}
-    raise HTTPException(status_code=404, detail="Item not found")
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
 

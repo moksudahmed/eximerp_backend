@@ -15,5 +15,4 @@ class SaleCreate(BaseModel):
     discount: int
 
     class Config:
-        orm_mode = True
- 
+        from_attributes = True

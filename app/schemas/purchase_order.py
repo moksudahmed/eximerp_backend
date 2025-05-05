@@ -13,8 +13,7 @@ class VendorResponse(VendorBase):
     id: int
 
     class Config:
-        orm_mode = True
-        
+        from_attributes = True
 
 class PurchaseOrderItemBase(BaseModel):
    # purchase_order_id: Optional[int]
@@ -22,7 +21,7 @@ class PurchaseOrderItemBase(BaseModel):
     quantity: Optional[int]
     cost_per_unit: Optional[Decimal]
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PurchaseOrderItemCreate(PurchaseOrderItemBase):
     pass
@@ -35,7 +34,7 @@ class PurchaseOrderItemResponse(PurchaseOrderItemBase):
     cost_per_unit: Optional[Decimal]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PurchaseOrderBase(BaseModel):
     #id: Optional[int]
@@ -46,7 +45,7 @@ class PurchaseOrderBase(BaseModel):
     user_id: Optional[int]
 
     class Config:
-        orm_mode = True
+       from_attributes = True
 
 class PurchaseOrderCreate(PurchaseOrderBase):  
     vendor_id: Optional[int]
@@ -57,7 +56,7 @@ class PurchaseOrderCreate(PurchaseOrderBase):
     items: List[PurchaseOrderItemBase]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PurchaseOrderResponse(PurchaseOrderBase):
     id: int
@@ -68,7 +67,7 @@ class PurchaseOrderResponse(PurchaseOrderBase):
     items: List[PurchaseOrderItemResponse]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PurchaseOrderItem(BaseModel):
     product_id: int
@@ -76,7 +75,7 @@ class PurchaseOrderItem(BaseModel):
     cost_per_unit: Decimal
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PurchaseOrder(BaseModel):
     id: int
@@ -87,4 +86,4 @@ class PurchaseOrder(BaseModel):
     items: List[PurchaseOrderItem]
     user_id: int
     class Config:
-        orm_mode = True
+        from_attributes = True

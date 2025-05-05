@@ -13,7 +13,7 @@ class AccountBase(BaseModel):
    #balance: Decimal = Field(..., gt=-0, max_digits=15, decimal_places=2)  # You can also set default values if needed.
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {Decimal: lambda v: str(v)}  # To ensure proper serialization of Decimal types
 
 
@@ -33,7 +33,7 @@ class AccountResponse(AccountBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class Account(BaseModel):
     account_id: int

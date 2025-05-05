@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from enum import Enum
 from app.models.enum_types import ActionType
+from typing import Optional
+from datetime import datetime
 
 class InventoryLogBase(BaseModel):
     product_id: int
@@ -31,6 +33,7 @@ class InventoryLog(InventoryLogBase):
     action_type: ActionType
     quantity: int
     user_id: int
+    created_at: Optional[datetime]
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -41,7 +41,7 @@ class SaleProduct(BaseModel):
     #itemwise_discount: int
 
     class Config:
-        orm_mode = True
+       from_attributes = True
 
 class Sale(BaseModel):
     id: int
@@ -53,4 +53,4 @@ class Sale(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+       from_attributes = True

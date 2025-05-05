@@ -48,4 +48,4 @@ class TransactionResponse(BaseModel):
     user_id: Optional[int]
 
     class Config:
-        orm_mode = True  # Ensure the model can be converted from an ORM object
+       from_attributes = True # Ensure the model can be converted from an ORM object

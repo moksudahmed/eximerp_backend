@@ -22,7 +22,7 @@ class JournalEntryCreate(BaseModel):
     account_id: int
 
     class Config:
-        orm_mode = True
+       from_attributes = True
 
 
 # Define GeneralLedgerCreate as a nested model
@@ -34,7 +34,7 @@ class GeneralLedgerCreate(BaseModel):
     user_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
   
 class CreateLedgerWithEntry(BaseModel):
     general_ledger: GeneralLedgerCreate    
@@ -51,7 +51,7 @@ class LedgerWithEntryRequest(BaseModel):
     journal_entries: List[JournalEntryCreate]  # Matches the original JSON key
 
     class Config:
-            orm_mode = True
+           from_attributes = True
             
 class GeneralLedgerUpdate(BaseModel):
     pass
@@ -64,7 +64,7 @@ class JournalEntry(BaseModel):
     general_ledger_id: Optional[int]    
     account_id: Optional[int]
     class Config:
-        orm_mode = True  # Old config for Pydantic 1.x
+        from_attributes = True  # Old config for Pydantic 1.x
 
 class GeneralLedger(BaseModel):
     id: int
@@ -77,4 +77,4 @@ class GeneralLedger(BaseModel):
     journal_entries:List[JournalEntry]
 
     class Config:
-        orm_mode = True  # Old config for Pydantic 1.x
+       from_attributes = True # Old config for Pydantic 1.x

@@ -6,6 +6,7 @@ from app.api.v1.endpoints import products, sales, auth, inventory_logs, cash_reg
 app = FastAPI()
 # Set up CORS
 # Add CORS middleware
+###
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  # List the allowed origins
@@ -13,6 +14,7 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
 )
+####
 app.include_router(products.router, prefix="/api/v1/products", tags=["products"])
 app.include_router(sales.router, prefix="/api/v1/sales", tags=["sales"])
 app.include_router(inventory_logs.router, prefix="/api/v1/inventory", tags=["inventory"])

@@ -11,8 +11,8 @@ import datetime
 class Account(Base):
     __tablename__ = 'account'
     
-    account_id = Column(Integer, primary_key=True)
-    account_name = Column(String, nullable=False)
+    account_id = Column(Integer, primary_key=True)    
+    account_name = Column(String, nullable=False, unique=True)  # Unique constraint added
     account_type = Column(Enum(AccountTypeEnum, name="accounttypeenum"), nullable=False)  # e.g., Asset, Liability, Equity
     balance = Column(Numeric(15, 2), nullable=False)  
     created_at = Column(DateTime, server_default=func.now(), nullable=False)

@@ -9,6 +9,7 @@ from app.models import account as account_model
 from app.db.session import get_db
 from app.services.CashFlowService import CashFlowService
 from app.models.enum_types import AccountTypeEnum
+from sqlalchemy.exc import IntegrityError
 
 from decimal import Decimal
 
@@ -18,12 +19,24 @@ router = APIRouter()
 @router.post("/", response_model=account_schema.Account)
 async def create_account(account: account_schema.AccountCreate, db: AsyncSession = Depends(get_db)):
     new_account = account_model.Account(**account.dict())
-    
-    
-    db.add(new_account)
-    await db.commit()
-    await db.refresh(new_account)
-    return new_account
+    try:
+        db.add(new_account)
+        await db.commit()
+        await db.refresh(new_account)
+        return new_account
+
+    except IntegrityError as e:
+        await db.rollback()
+        if "account_account_name_key" in str(e.orig):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Account name '{account.account_name}' already exists."
+            )
+        raise HTTPException(status_code=500, detail="Database integrity error.")
+
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 # READ all transactions with pagination
 @router.get("/", response_model=List[account_schema.AccountResponse])

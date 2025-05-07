@@ -22,7 +22,7 @@ async def login_for_access_token(
             db: AsyncSession = Depends(get_db),
             form_data: OAuth2PasswordRequestForm = Depends()
         ):
-    # Step 1: Retrieve the user from the database using the username
+    # Step 1: Retrieve the user from the database using the username    
     result = await db.execute(select(User).where(User.username == form_data.username))
     user = result.scalars().first()
     
